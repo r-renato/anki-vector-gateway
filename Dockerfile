@@ -1,23 +1,86 @@
-FROM debian:stretch
+FROM debian:stretch as builder
+
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		autoconf \
+		automake \
+		bzip2 \
+		dpkg-dev \
+		file \
+		g++ \
+		gcc \
+		imagemagick \
+		libbz2-dev \
+		libc6-dev \
+		libcurl4-openssl-dev \
+		libdb-dev \
+		libevent-dev \
+		libffi-dev \
+		libgdbm-dev \
+		libgeoip-dev \
+		libglib2.0-dev \
+		libgmp-dev \
+		libjpeg-dev \
+		libkrb5-dev \
+		liblzma-dev \
+		libmagickcore-dev \
+		libmagickwand-dev \
+		libncurses5-dev \
+		libncursesw5-dev \
+		libpng-dev \
+		libpq-dev \
+		libreadline-dev \
+		libsqlite3-dev \
+		libssl-dev \
+		libtool \
+		libwebp-dev \
+		libxml2-dev \
+		libxslt-dev \
+		libyaml-dev \
+		make \
+		patch \
+		unzip \
+		xz-utils \
+		zlib1g-dev \
+		\
+# https://lists.debian.org/debian-devel-announce/2016/09/msg00000.html
+		$( \
+# if we use just "apt-cache show" here, it returns zero because "Can't select versions from package 'libmysqlclient-dev' as it is purely virtual", hence the pipe to grep
+			if apt-cache show 'default-libmysqlclient-dev' 2>/dev/null | grep -q '^Version:'; then \
+				echo 'default-libmysqlclient-dev'; \
+			else \
+				echo 'libmysqlclient-dev'; \
+			fi \
+		) \
+	; \
+rm -rf /var/lib/apt/lists/*
 
 ENV LANG C.UTF-8
 
-RUN apt-get update && \
-    apt-get install -y wget zlib1g-dev python3-pip \
-        libatlas-base-dev \
-        python3-pil.imagetk python3-numpy && \
-    echo -e "\n--- Upgrading python to 3.7 ---\n" && \
-    for n in $(whereis python3.5) ; do echo rm -f $n ; done && \
-    wget -q https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz && \
-    (tar xzf Python-3.7.2.tgz && rm Python-3.7.2.tgz && \
-        cd Python-3.7.2 && ./configure --enable-optimizations && make altinstall) && \
-    echo -e "\n--- ANKI VECTOR INSTALL ---\n" && python -V && python3 -V\
-    python3 -m pip install --user anki_vector && \
-#    python3 -m pip install --user --upgrade anki_vector && \
-    rm -rf /var/lib/apt/lists/*
+# extra dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		tk-dev \
+		uuid-dev \
+		git \
+        ca-certificates \
+&& rm -rf /var/lib/apt/lists/*
 
-ADD app/ /app
-WORKDIR /app
+WORKDIR /opt
 
-# Install app dependencies
-#RUN pip3 install -r requirements.txt
+RUN git clone  -b 3.7 --depth=1 https://github.com/python/cpython.git --single-branch
+WORKDIR /opt/cpython
+RUN ./configure
+RUN make -j8
+RUN make install -j8
+
+FROM busybox:glibc
+
+COPY --from=builder /usr/local/lib/python3.7 /usr/local/lib/python3.7
+COPY --from=builder /usr/local/lib/libpython3.7m.a /usr/local/lib/
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+COPY --from=builder /lib/x86_64-linux-gnu/*.so.* /lib/
+COPY --from=builder /usr/lib/*.so.* /usr/lib/
+
+CMD ["/usr/local/bin/python3.7"]
