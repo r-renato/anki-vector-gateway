@@ -72,7 +72,7 @@ RUN git clone  -b 3.7 --depth=1 https://github.com/python/cpython.git --single-b
 WORKDIR /opt/cpython
 RUN ./configure
 RUN make -j8
-RUN make install -j8 && ls -latr /lib
+RUN make install -j8 && echo "\n--\n" && ls -latr /lib && "\n--\n" && ls -latr /usr/lib && "\n--\n"
 
 FROM busybox:glibc
 
