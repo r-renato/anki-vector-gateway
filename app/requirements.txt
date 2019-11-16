@@ -1,4 +1,5 @@
-python3-pil.imagetk
+# python3-pil.imagetk
+py3-pillow
 python3-numpy
 anki-vector
 flask
