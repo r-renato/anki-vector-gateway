@@ -80,7 +80,8 @@ COPY --from=builder /usr/local/lib/python3.7 /usr/local/lib/python3.7
 COPY --from=builder /usr/local/lib/libpython3.7m.a /usr/local/lib/
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-COPY --from=builder /lib/x86_64-linux-gnu/*.so.* /lib/
+#COPY --from=builder /lib/x86_64-linux-gnu/*.so.* /lib/
+COPY --from=builder /lib/arm-linux-gnueabihf  /lib/
 COPY --from=builder /usr/lib/*.so.* /usr/lib/
 
 CMD ["/usr/local/bin/python3.7"]
