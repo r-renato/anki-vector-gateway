@@ -74,9 +74,9 @@ RUN git clone  -b 3.7 --depth=1 https://github.com/python/cpython.git --single-b
     && echo "\n--- Installing Anki Vector Prerequisite ---\n" \
     && apt-get install -y python3-pip \
             libatlas-base-dev \
-            python3-pil.imagetk python3-numpy \
-    && echo "\n--- Installing Anki Vector ---\n" \
-    && python3 -m pip install --user anki_vector
+            python3-pil.imagetk python3-numpy
+#    && echo "\n--- Installing Anki Vector ---\n" \
+#    && python3 -m pip install --user anki_vector
 
 #WORKDIR /opt/cpython
 #RUN ./configure
