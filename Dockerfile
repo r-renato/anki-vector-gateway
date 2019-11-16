@@ -70,7 +70,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /opt
 
 RUN git clone  -b 3.7 --depth=1 https://github.com/python/cpython.git --single-branch \
-    (cd cpython && ./configure && make -j8 && make install -j8)
+    && (cd cpython && ./configure && make -j8 && make install -j8)
+
 #WORKDIR /opt/cpython
 #RUN ./configure
 #RUN make -j8
