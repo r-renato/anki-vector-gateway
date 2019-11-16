@@ -1,15 +1,14 @@
-FROM python:3-alpine
+FROM debian:stretch
 
-# Update
-RUN apk update
-RUN python -m pip install --upgrade pip
-RUN apk --no-cache add --virtual .builddeps gcc gfortran musl-dev
-RUN apk add --update --no-cache py3-numpy
-ENV PYTHONPATH=/usr/lib/python3.7/site-packages
+ENV LANG C.UTF-8
 
-#RUN pip3 install numpy==1.14.0 && apk del .builddeps && rm -rf /root/.cache
-RUN apk add py3-pillow
-RUN apk add --update --no-cache anki-vector
+RUN apt-get update \
+    && apt-get install -y python3 python3-pip \
+        libatlas-base-dev \
+        python3-pil.imagetk python3-numpy
+    && python3 -m pip install --user anki_vector
+    && python3 -m pip install --user --upgrade anki_vector
+    && rm -rf /var/lib/apt/lists/*
 
 ADD app/ /app
 WORKDIR /app
