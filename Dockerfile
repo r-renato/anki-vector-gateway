@@ -3,7 +3,7 @@ FROM debian:stretch
 ENV LANG C.UTF-8
 
 RUN apt-get update && \
-    apt-get install -y \
+    apt-get install -y python3-pip \
         libatlas-base-dev \
         python3-pil.imagetk python3-numpy && echo -e "\n--- ANKI VECTOR INSTALL ---\n" && \
     python3 -m pip install --user anki_vector && \
