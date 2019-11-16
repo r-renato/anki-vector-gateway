@@ -70,8 +70,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /opt
 
 RUN git clone  -b 3.7 --depth=1 https://github.com/python/cpython.git --single-branch \
-    && (cd cpython && ./configure && make -j8 && make install -j8) \
-    && echo "\n--- Installing Anki Vector Prerequisite ---\n" \
+    && (cd cpython && ./configure && make -j8 && make install -j8)
+RUN echo "\n--- Installing Anki Vector Prerequisite ---\n" \
     && apt-get install -y python3-pip \
             libatlas-base-dev \
             python3-pil.imagetk python3-numpy
