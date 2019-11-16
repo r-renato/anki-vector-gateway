@@ -64,24 +64,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		uuid-dev \
 		git \
         ca-certificates \
-&& rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && for n in $(whereis python3.5) ; do rm -Rf $n ; done
 
 WORKDIR /opt
 
-RUN git clone  -b 3.7 --depth=1 https://github.com/python/cpython.git --single-branch
-WORKDIR /opt/cpython
-RUN ./configure
-RUN make -j8
-RUN make install -j8 && echo "\n--\n" && ls -latr /lib && echo "\n--\n" && ls -latr /usr/lib && echo "\n--\n"
+RUN git clone  -b 3.7 --depth=1 https://github.com/python/cpython.git --single-branch \
+    (cd cpython && ./configure && make -j8 && make install -j8)
+#WORKDIR /opt/cpython
+#RUN ./configure
+#RUN make -j8
+#RUN make install -j8 # && echo "\n--\n" && ls -latr /lib && echo "\n--\n" && ls -latr /usr/lib && echo "\n--\n"
 
-FROM busybox:glibc
-
-COPY --from=builder /usr/local/lib/python3.7 /usr/local/lib/python3.7
-COPY --from=builder /usr/local/lib/libpython3.7m.a /usr/local/lib/
-COPY --from=builder /usr/local/bin /usr/local/bin
-
-#COPY --from=builder /lib/x86_64-linux-gnu/*.so.* /lib/
-COPY --from=builder /lib/arm-linux-gnueabihf  /lib/
-COPY --from=builder /usr/lib/*.so.* /usr/lib/
+#FROM busybox:glibc
+#
+#COPY --from=builder /usr/local/lib/python3.7 /usr/local/lib/python3.7
+#COPY --from=builder /usr/local/lib/libpython3.7m.a /usr/local/lib/
+#COPY --from=builder /usr/local/bin /usr/local/bin
+#
+##COPY --from=builder /lib/x86_64-linux-gnu/*.so.* /lib/
+#COPY --from=builder /lib/arm-linux-gnueabihf  /lib/
+#COPY --from=builder /usr/lib/*.so.* /usr/lib/
 
 CMD ["/usr/local/bin/python3.7"]
