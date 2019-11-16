@@ -2,7 +2,7 @@ FROM python:3-alpine
 
 # Update
 RUN apk update
-RUN apk --no-cache add --virtual .builddeps gcc && pip install numpy==1.14.0 && apk del .builddeps && rm -rf /root/.cache
+RUN apk --no-cache add --virtual .builddeps gcc gfortran musl-dev && pip3 install numpy==1.14.0 && apk del .builddeps && rm -rf /root/.cache
 RUN apk add py3-pillow
 
 RUN python -m pip install --upgrade pip
