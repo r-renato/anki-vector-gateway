@@ -12,8 +12,7 @@ RUN apt-get update && \
         libatlas-base-dev \
         python3-pil.imagetk python3-numpy && \
     apt-get clean && \
-    echo "\n--- Anki Vector SDK Install ---\n" \
-    python3 -m pip install --user anki_vector && \
+    echo "\n--- Anki Vector SDK Install ---\n" && \
     python3 -m pip install --user anki_vector && \
     find / -name "anki_vector" 2>/dev/null && \
 #    python3 -m pip install --user --upgrade anki_vector && \
