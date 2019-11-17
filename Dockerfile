@@ -9,7 +9,7 @@ RUN apt-get update && \
     for n in $(whereis python3.5) ; do echo rm -Rf $n ; done && \
     echo -e "\n--- ANKI VECTOR INSTALL ---\n" && python -V && python3 -V\
     python3 -m pip install --user anki_vector && \
-#    python3 -m pip install --user --upgrade anki_vector && \
+    python3 -m pip install --user --upgrade anki_vector && \
     rm -rf /var/lib/apt/lists/*
 
 #FROM busybox:glibc
