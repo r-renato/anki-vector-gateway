@@ -14,11 +14,12 @@ RUN apt-get update && \
     apt-get clean && \
 #    echo -e "\n--- Upgrading python to 3.7 ---\n" && \
 #    for n in $(whereis python3.5) ; do rm -Rf $n ; done && \
-    echo "\n--- Anki Vector SDK Install ---\n\n" \
+    echo "\n--- Anki Vector SDK Install ---\n" \
     python3 -m pip install --user anki_vector && \
+    python3 -c 'import anki_vector' && \
 #    python3 -m pip install --user --upgrade anki_vector && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "\n--- Anki prerequisite installed well. ($(python3 -V)) ---\n\n" && \
+    echo "--- Anki prerequisite installed well. ($(python3 -V)) ---\n" && \
     python3 -m pip install -r /app/requirements.txt
 
 ENV PYTHONHOME /usr/local
