@@ -1,4 +1,4 @@
-FROM python:3.7-stretch as base
+FROM python:3.7-stretch as builder
 
 FROM busybox:glibc
 
