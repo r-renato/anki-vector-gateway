@@ -16,6 +16,7 @@ RUN apt-get update && \
 #    for n in $(whereis python3.5) ; do rm -Rf $n ; done && \
     echo "\n--- Anki Vector SDK Install ---\n" \
     python3 -m pip install --user anki_vector && \
+    find / -name "anki_vector" 2>/dev/null && \
     python3 -c 'import anki_vector' && \
 #    python3 -m pip install --user --upgrade anki_vector && \
     rm -rf /var/lib/apt/lists/* && \
