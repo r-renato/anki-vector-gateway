@@ -13,6 +13,7 @@ COPY --from=builder /usr/lib/*.so.* /usr/lib/
 ENV PYTHONHOME /usr/local
 ENV LD_LIBRARY_PATH /usr/local/lib
 
+CMD ["echo -e \"\n--- ANKI VECTOR INSTALL ---\n\" && python -V && python3 -V"]
 CMD ["/usr/local/bin/python3.7"]
 
 #FROM debian:stretch as builder
