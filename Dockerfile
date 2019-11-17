@@ -14,6 +14,7 @@ RUN apt-get update && \
     apt-get clean && \
     echo "\n--- Anki Vector SDK Install ---\n" \
     python3 -m pip install --user anki_vector && \
+    python3 -m pip install --user anki_vector && \
     find / -name "anki_vector" 2>/dev/null && \
 #    python3 -m pip install --user --upgrade anki_vector && \
     rm -rf /var/lib/apt/lists/* && \
