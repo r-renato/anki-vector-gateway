@@ -17,7 +17,7 @@ RUN apt-get update && \
 #    python3 -m pip install --user --upgrade anki_vector && \
     rm -rf /var/lib/apt/lists/* && \
     echo "Anki prerequisite installed well. Python3 v$(python3 -V)" && \
-    python3 -m pip install -r requirements.txt
+    python3 -m pip install -r /app/requirements.txt
 
 ENV PYTHONHOME /usr/local
 ENV LD_LIBRARY_PATH /usr/local/lib
