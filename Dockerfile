@@ -1,5 +1,10 @@
 FROM python:3.7-stretch as builder
 
+ARG BUILD_ID
+ENV BUILD_ID=$BUILD_ID
+LABEL stage=builder
+LABEL build=$BUILD_ID
+
 ENV LANG C.UTF-8
 RUN apt-get update && \
     apt-get install -y python3-pip \
