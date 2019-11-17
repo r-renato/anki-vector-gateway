@@ -1,5 +1,1 @@
-# python3-pil.imagetk
-
-python3-numpy
-anki-vector
 flask
