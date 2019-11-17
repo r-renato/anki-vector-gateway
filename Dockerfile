@@ -22,4 +22,4 @@ ENV PYTHONHOME /usr/local
 ENV LD_LIBRARY_PATH /usr/local/lib
 
 #RUN python3 -c 'import anki_vector'
-CMD python3 /app/src/app.py ; sleep 5000 ; echo "Done."
+CMD python3 /app/start.py ; echo "Done."
