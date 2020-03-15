@@ -26,7 +26,7 @@ RUN pip3 install \
 RUN cd /catkin_ws/src/ && \
     git clone https://github.com/ros/ros && \
     cd .. && \
-    /ros_entrypoint.sh catkin_make_isolated install --pkg rosunit
+    /ros_entrypoint.sh catkin_make_isolated --pkg rosunit
 
 # setup Anki's SDK
 RUN python3 -m pip install --user anki_vector
