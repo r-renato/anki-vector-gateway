@@ -24,7 +24,7 @@ RUN pip3 install \
 
 # install up-to-date rosunit so we'll get the patch for Python3
 RUN cd /catkin_ws/src/ && \
-    git clone https://github.com/ros/ros && \
+    git clone https://github.com/ros/ros && \ ls -latr && \
     cd .. && \
     /ros_entrypoint.sh catkin_make --pkg rosunit
 
