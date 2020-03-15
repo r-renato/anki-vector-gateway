@@ -1,5 +1,8 @@
 FROM ros:melodic-ros-core-bionic
 
+# init catkin workspace
+RUN mkdir -p /catkin_ws/src/vector_ros_driver
+
 # install required dependencies
 RUN apt-get update && apt-get install -y \
     python3-yaml \
