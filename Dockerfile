@@ -42,5 +42,3 @@ RUN /ros_entrypoint.sh /bin/bash -c "mkdir /cv_bridge_build_ws && \
                                      git checkout melodic && \
                                      cd ../../ && \
                                      catkin build cv_bridge"
-
-
