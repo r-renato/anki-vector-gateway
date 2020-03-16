@@ -1,45 +1,25 @@
-FROM ros:melodic-ros-core-bionic
+FROM ros:melodic-ros-core-bionic as builder
 
-# init catkin workspace
-RUN mkdir -p /catkin_ws/src/vector_ros_driver
+LABEL maintainer="x" \
+      stage=builder
 
-# install required dependencies
-RUN apt-get update && apt-get install -y \
-    python3-yaml \
-    python3-pip  \
-    expect \
-    python-catkin-tools \
-    python3-dev \
-    python3-catkin-pkg-modules \
-    python3-numpy \
-    libopencv-dev \
-    ros-melodic-tf \
-    ros-melodic-xacro \
-    ros-melodic-robot-state-publisher \
-    ros-melodic-joint-state-publisher
+# ENV LANG C.UTF-8
 
-RUN pip3 install \
-    rospkg \
-    catkin_pkg
+ADD app/ /app
 
-# install up-to-date rosunit so we'll get the patch for Python3
-RUN cd /catkin_ws/src/ && \
-    git clone https://github.com/ros/ros && \
-    ls -latr && \
-    cd .. && \
-    /ros_entrypoint.sh catkin_make --pkg rosunit
+RUN apt-get update \
+    && apt-get install -y python3-pip \
+        libatlas-base-dev \
+        python3-pil.imagetk python3-numpy \
+    && apt-get clean \
+    && echo "\n--- Anki Vector SDK Install ---\n" \
+    && python3 -m pip install --user anki_vector \
+    && rm -rf /var/lib/apt/lists/* \
+    && echo "--- Anki prerequisite installed well. ($(python3 -V)) ---\n" \
+    && python3 -m pip install -r /app/requirements.txt
 
-# setup Anki's SDK
-RUN python3 -m pip install --user anki_vector
+ENV PYTHONHOME /usr/local
+ENV LD_LIBRARY_PATH /usr/local/lib
 
-# build cv_bridge for Python3.6
-RUN /ros_entrypoint.sh /bin/bash -c "mkdir /cv_bridge_build_ws && \
-                                     cd /cv_bridge_build_ws && \
-                                     catkin init && \
-                                     catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3.6 -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so && \
-                                     catkin config --install && \
-                                     git clone https://github.com/ros-perception/vision_opencv.git src/vision_opencv && \
-                                     cd src/vision_opencv/ && \
-                                     git checkout melodic && \
-                                     cd ../../ && \
-                                     catkin build cv_bridge"
+#RUN python3 -c 'import anki_vector'
+CMD python3 /app/start.py ; echo "Done."
