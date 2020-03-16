@@ -1,4 +1,4 @@
-FROM ros:melodic-ros-core-bionic
+FROM ros:melodic-ros-core-bionic as builder
 
 LABEL maintainer="x" \
       stage=builder
@@ -11,6 +11,7 @@ RUN apt-get update \
     && apt-get install -y python3-pip \
         libatlas-base-dev \
         python3-pil.imagetk python3-numpy \
+    && apt-get clean \
     && echo "\n--- Anki Vector SDK Install ---\n" \
     && python3 -m pip install --user anki_vector \
     && rm -rf /var/lib/apt/lists/* \
