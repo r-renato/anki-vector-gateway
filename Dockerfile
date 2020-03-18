@@ -1,4 +1,4 @@
-FROM ros:melodic-ros-core-bionic as builder
+FROM python:3.7-stretch as builder as builder
 
 LABEL maintainer="x" \
       stage=builder
